@@ -134,7 +134,7 @@ One common operation is to access the parameter of a shape via `shapeName.proper
 
 ## Constraints Example: minSize & maxSize
 
-We will go through examples of `minSize` and `maxSize` constraints that are specifically for _**circles only**_. 
+We will go through simplified examples of `minSize` and `maxSize` constraints that are specifically for _**circles only**_. 
 
 ```typescript
 minSize: ([shapeType, props]: [string, any]) => {
@@ -183,15 +183,15 @@ export const circleDef: ShapeDef = {
 * **Logic:** We want the input circle to have a minimum size \(at least `r = 20`\) as the function name suggests, so we want to express our returned answer in terms of energy, where `energy > 0` is bad \(the constraint is unsatisfied\), and `energy <= 0` is good \(the constraint is satisfied\). For example, with a small circle of `r = 1`, we will return 19 \(not good\), whereas with a big circle of `r = 30`, we will return -10, a negative number that satisfies the constraint. 
 
 ```typescript
-import { canvasSize } from "renderer/ShapeDef";
-
-maxSize: ([shapeType, props]: [string, any]) => {
-    const limit = Math.max(...canvasSize); /* ... = "spread" operator in Typescript */
-    return sub(props.r.contents, constOf(limit / 6.0));
+maxSize: ([shapeType, props]: [string, any], limit: VarAD) => {
+  return sub(props.r.contents, div(limit, constOf(2)));
 }
 ```
 
-The function `maxSize` is very similar to `minSize` with the addition of a global variable `canvasSize` which indicates the size of the canvas. We use this to limit our circle's radius. It is divided by `6.0` so that the circle does not cover the entire canvas. You can feel free to play around with the amount you divide by, but `6.0` has worked pretty well. If you're curious about how `minSize` and `maxSize` are implemented in Penrose, you can find the code [here](https://github.com/penrose/penrose/blob/dbf710646bcaad9f0e3142388ae4759ca6b3a740/packages/core/src/contrib/Constraints.ts#L262).
+The function `maxSize` is very similar to `minSize` with the addition of another input parameter
+`limit` that is used to limit the circle's diameter. If you're curious about the full
+implementations of `minSize` and `maxSize` in Penrose, you can find the code
+[here](https://github.com/penrose/penrose/blob/9bf6901c3e246bd00f2cab470aa17088595fbf77/packages/core/src/contrib/Constraints.ts#L266).
 
 ## Objectives Example: Circle Repel
 

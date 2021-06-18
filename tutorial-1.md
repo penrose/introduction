@@ -65,6 +65,19 @@ Here we have capitalized `Set` because we did so in our `setTheory.dsl` file. If
 
 For style, we have a little more work to do. If you are familiar with HTML/CSS, a `.sty` file is essentially a `.css` file for your HTML \(which would be our `.sub` file\). We will rename our provided `.sty` file to `twoSets.sty`.
 
+We first need to specify the dimensions of the canvas that our diagram will be drawn on. To do so,
+you can write the following code anywhere in `twoSets.sty`. We recommend using a canvas size of
+800x700.
+
+{% code title="twoSets.sty" %}
+```typescript
+canvas {
+  width = (* some width *)
+  height = (* some height *)
+}
+```
+{% endcode %}
+
 Now, Penrose does _not_ know a set is commonly represented as a circle. **We need to style our elements from scratch.** This might seem strange, but this way you are given absolute freedom in how you want to represent your substances in the diagram. Your set doesn't have to be a circle, it could be a square, a rectangle, etc. But for this example, we will be representing sets as circles.
 
 The syntax for declaring styles is as follows:
@@ -91,7 +104,7 @@ This is the specification for the shape **Circle**, and all the other shapes we 
 
 When we construct the `Circle` object for our Set, we need to look back at our goal diagram. Our desired circles do not have strokes, therefore we will set `strokeWidth: 0.0`. For all the other properties that we did not specify, Penrose will choose the best value for them based on optimization, so you do not have to worry.
 
-{% code title="twosets.sty" %}
+{% code title="twoSets.sty" %}
 ```typescript
 forall Set x {
     x.icon =  Circle {
